@@ -2,7 +2,7 @@
 Prepare a manuscrpit to submit to IJWMIP.
 
 ---
-### 1. Progress:
+### Progress:
 
 1） Finished work:
  * [x] Motivation/experiment.
@@ -19,7 +19,7 @@ Prepare a manuscrpit to submit to IJWMIP.
 
 ---
 
-### 2. Contributors:
+### Contributors:
 * Hailong su
 * Lina Yang
 * Huiwu Luo
