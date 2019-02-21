@@ -18,6 +18,10 @@ Prepare a manuscrpit to submit to IJWMIP.
 
 3） To be launched:
  * [ ] Re-submission.
+ 
+4） Attachment:
+  * [修改的完整文档](ws-ijwmip-rev.pdf)
+  * [改动部分分析报告](change-analysis.pdf)
 
 ---
 
