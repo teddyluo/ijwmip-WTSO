@@ -97,8 +97,8 @@
    In this approach, the wavelet transform is firstly imposed to decompose the HSI signal into approximate coefficients (ACs) and details coefficients (DCs). Then, smooth ordering is applied to the ACs so that the coefficients is aligned in a 1-D space. In this procedure, the spatial information is encoded.
    Finally, the simple 1-D signal interpolation tool is adopted to build the final classifier.
    The use of wavelet transform in WTSO is to reduce the high dimensionality of HSI on one hand and capture the intrinsic property of each input signal on the other hand.
-   Besides, by converting the hight dimensional samples into a 1-D ordering sequence, WTSO can reduce the computational cost and simultaneously perform prediction for the samples without labels. 
-   Note that in TWSO, the smooth ordering and 1-D interpolation are used in an iterative manner, and will be terminated after a finite number. 
+   Besides, by converting the hight dimensional samples into a 1-D ordering sequence, WTSO can reduce the computational cost and simultaneously perform prediction for the samples without labels.
+   Note that in WTSO, the smooth ordering and 1-D interpolation are used in an iterative manner, and will be terminated after a finite number.
    The proposed method is experimentally demonstrated on two real HSI data sets: IndianPines and University of Pavia, achieving promising results.
 \end{abstract}
 
@@ -197,7 +197,7 @@ More importantly, the results of WTSO is superior when compared with other state
 %
 %The main contribution of our proposed method are summarized as follows:
 %\begin{romanlist}[(ii)]
-% \item A novel method called SOWT is proposed for HSI classification, which processing decompose coefficient in 1-D space.
+% \item A novel method called WTSO is proposed for HSI classification, which processing decompose coefficient in 1-D space.
 % \item Using a new distance measure to define smooth ordering.
 %\item  Apply smooth ordering to the approximate coefficient, which can be embedded into 1-D sequence.
 %\end{romanlist}
@@ -209,12 +209,13 @@ The remainder of this paper is organized as follows. The proposed WTSO is descri
 
 \section{Methodology}\label{sec:proposed}
 \begin{figure}[bh]
-	\centerline{\includegraphics[width=13cm]{image/flow1}}
+	\centerline{\includegraphics[width=13cm]{image/flow-chart}}
 	\vspace*{8pt}
 	\caption{Flowchart of the proposed WTSO classification scheme.}
 	\label{figure1}
 \end{figure}
-In this section, we introduce our proposed  WTSO method. The flowchart of our method is shown in Fig. \ref{figure1}, where SO1CB is the abbreviation of the developed smooth ordering-based scheme. %Interpolation uses cubic spline interpolation in our scheme.
+In this section, we introduce our proposed  WTSO method. The flowchart of our method is shown in Fig. \ref{figure1}.
+%, where SO1CB is the abbreviation of the developed smooth ordering-based scheme. %Interpolation uses cubic spline interpolation in our scheme.
 The details are described in the following subsections.
 
 
@@ -458,7 +459,7 @@ Summarily, our proposed method WTSO for HSI classification is given in Algorithm
 
 \begin{table}[ht]
 
-\tbl{The numbers of training and test samples of Indian Pines.}
+\tbl{The numbers of training and test samples for Indian Pines.}
 {\begin{tabular}{@{}cccc@{}} \toprule
 ID & Class name & Train &
 \ Test \\
@@ -506,22 +507,48 @@ ID & Class name & Train &
 
 
 \section{Experiments}\label{sec:experiment}
-\subsection{Experimental design}
+\subsection{Experimental Design}
 
 
 
-In this section, we demonstrate the performance of our proposed method using two real word HSI image: Indian Pines and University of Pavia (PaviaU). For fairness, other methods are carried out to compare with us: SVM\cite{37}, 3-D wavelet\cite{29}, 3-D Gabor\cite{38}, SVM-3DG \cite{40}, Res. Conv-Deconv Net \cite{41}. All the experiments are performed on windows system desktop PC with Inter(R) Core(TM) i5-7400 CPU at 3.00GHz, 64bit system, and 8.00 GB RAM using MATLAB language. The optimal parameter of SVM is achieved via fivefold cross-validation. For the 3-D Gabor, the size of the filter is 7 $\times$ 7 $\times$ 7. The size of wavelet filter is 2 and Haar wavelet is applied for 3-D wavelet. In this paper, 10\% samples is used for the training set, and remaining 90\% is used as the testing set for classification.
+In this section, we demonstrate the performance of our proposed method using two real word HSI data sets: Indian Pines and University of Pavia (PaviaU). 
+The following methods are implemented and evaluated:
+SVM \cite{37}, 3-D wavelet \cite{29}, 3-D Gabor \cite{38}, SVM-3DG \cite{40}, Res. Conv-Deconv Net \cite{41}. 
+%For fairness, other methods are carried out to compare with our proposed method:
+To be fair, the best performance of all methods are reported in this document.
+To be specific, SVM with 5-fold cross-validation is implemented.
+For the 3-D Gabor method, the size of filter is 7 $\times$ 7 $\times$ 7.
+For the 3-D wavelet method, the size of filter is 2, where Haar wavelet is applied. 
+In all experiments, 10\% samples are used for training, and the remaining 90\% ones are used for test. 
+%All the experiments are performed on windows system desktop PC with Inter(R) Core(TM) i5-7400 CPU at 3.00GHz, 64bit system, and 8.00 GB RAM. And the MATLAB language is adopted.
 
 
+\subsubsection{Data Sets}
 
-\subsubsection{Data set}
+\begin{figure}[htb]
+	\centerline{\includegraphics[width=13cm]{image/indian_map}}
+	%\vspace*{8pt}
+	\caption{Classification maps of Indian Pines scene. (a) Ground truth (b) Training set (c) Test set (d) WTSO (OA=97.75\%)}
+	\label{figure7}
+\end{figure}
+
+
+\begin{figure}[bh]
+	\centerline{\includegraphics[width=12cm]{image/paviaMap}}
+	%\vspace*{8pt}
+	\caption{Classification maps of University of Pavia scene. (a) Ground truth (b) Training set (c) Test set (d) WTSO (OA=97.76\%)}
+	\label{figure8}
+\end{figure}
+
+
 \begin{itemlist}
- \item The first data set is the Indian Pines, which is captured by AVIRIS sensor over the northwestern Indian Pines test site. The size of this data set is 145 $\times$ 145, and consists of 224 spectral with in the wavelength from $0.4 \times 10^{-6}$ to $0.6 \times 10^{-6}$m. In this scene, the water absorption bands ([104-108],[150-163],220) are removed. There are approximate 10249 labeled pixels with 16 classes. The Ground truth for Indian Pines is shown in Fig.~\ref{figure7}(a). Numbers of the training and testing samples of Indian Pines is shown in Table 1.
- \item The second data set used in our experiments is University of Pavia, which is gathered by the Reflective Optics System Imaging Spectrometer (ROSIS-03) in Pavia, northern Italy. It contains 115 bands and the size is 610 $\times$ 340 with 9 classes. The  spectral coverage range from 0.43-0.86 $\mu$m. The Ground truth for Indian Pines is shown in Fig.~\ref{figure8}(a). Numbers of the training and testing samples of Indian Pines is shown in Table 2.
+ \item The first data set is the Indian Pines which is captured by AVIRIS sensor over the northwestern Indian Pines test site. The size of this data set is 145 $\times$ 145, and it consists of 224 spectral with in the wavelength from $0.4 \times 10^{-6}$ to $0.6 \times 10^{-6}$m. In this scene, the water absorption bands ([104-108],[150-163],220) are removed. There are approximate 10249 labeled pixels with 16 classes. The ground truth of Indian Pines is shown in Fig.~\ref{figure7}(a), where the numbers used for training and test are shown in Table 1.
+ 
+ \item The second data set used in our experiments is University of Pavia, which is gathered by the Reflective Optics System Imaging Spectrometer (ROSIS-03) in Pavia, northern Italy. It contains 115 bands, and the size is 610 $\times$ 340, along with 9 classes. The  spectral coverage ranges from 0.43$\mu$m to 0.86 $\mu$m. The ground truth is shown in Fig.~\ref{figure8}(a), where the numbers of each class used for training and test are shown in Table 2.
 
 \end{itemlist}
 \begin{table}[ht]
-\tbl{The numbers of training and test samples of University of Pavia.}
+\tbl{The numbers of training and test samples for University of Pavia.}
 {\begin{tabular}{@{}cccc@{}} \toprule
 ID & Class name & Train &\ Test \\
   \colrule
@@ -538,18 +565,32 @@ ID & Class name & Train &\ Test \\
 \label{table2}
 \end{table}
 
-\subsubsection{Performance metrics }
+\subsubsection{Performance Metrics }
 
-In our experiments, the results are measured by the overall accuracy (OA), average accuracy (AA) and Kappa coefficient. In general, an accuracy is used to measure the probability of each classes classified correctly. For detail, OA measures the ratio between the correct and total number of predictions across all test sets. AA measures the average accuracy of each class. It describes the consistency of each category by determining the degree to which a particular class matches between two data sets.
+%In a general sense, metric is used to measure the performance of each classes classified correctly.
+The results are measured by overall accuracy (OA), average accuracy (AA), and Kappa coefficient (Kappa). In details, OA is the ratio of those correctly classified samples to the total samples. AA is the average of all classes. 
+Finally, Kappa coefficient describes the agreement of correct percent classification by performing a random classification test, in which the percentage accuracy is ignored.
+
+\subsection{Experimental Results}
+\begin{enumerate}
+\item Indian Pines data set. 
+%The first data set is Indian Pines. The number of samples is about 1024, which is approximately 10\% of all labeled samples. And remain 90\% samples are used for testing. (removed becaused of the same description as above)
+Table 3 shows the classification results of Indian Pines scene of all baseline methods. One can observe that the proposed WTSO obtains the best results in all metrics. 
+The OA obtained by 3-D Gabor and WTSO exceeds 90\%, yet the proposed WTSO produces an OA value that exceeds 3-D Gabor by 4.33\%, which is the best. 
+For Alfalfa, Corn-notill, Corn, Soybean-mintill and Woods classes, the proposed WTSO obtains the best results. Moreover, Res.Conv-Deconv Net produces the best results in Corn-mintill, Grass-pasture, Grass-trees, Soybean-notill, Wheat, Buildings-Grass-Trees-Drives and Stone-Steel-Towers classes. 
+In all, comparing with the results of other baseline methods, the results produced by our WTSO are significantly improved.
 
 
-\subsection{Experimental results}
-Table 3 shows the classification results of Indian Pines scene using our proposed method and the methods being compared. The best results are marked bold. It is obvious that the proposed method produced the best classification accuracy of all OA, AA, and Kappa. Table 4 shown the classification accuracy of the proposed method compared with other approaches for University of Pavia, we can see that the proposed method yielded the best result in metric criterion OA. 3-D Gabor achieved the best accuracy in metric criterion AA and Kappa. Fig.~\ref{figure7} (d) is the classification map using SOWT for Indian Pines scene.  Fig.~\ref{figure8} (d) shown the classification map for PaviaU using proposed method SOWT.
+\item University of Pavia (PaviaU) data set. In this experiment, we randomly chose 3912 labeled samples, where the ratio is about 8.2\% of all samples. Table 4 shows the classification accuracy of the proposed method when compared with other methods. 
+It can be observed that our proposed method produces the best results in OA, whereas 3-D Gabor obtains the best results in AA and Kappa agreement. 
+Particularly, WTSO obtains the best performance in Gravel, Bitumen and Self-Blocking Bricks classes. However, the 3-D wavelet method produces the best result in Painted metal sheets class (100\%). Res.Conv-Deconv Net produces the worst results, due to the complexity of neural network.
+\end{enumerate}
+%Table 3 shows the classification results of Indian Pines scene using our proposed method and the methods being compared. The best results are marked bold. It is obvious that the proposed method produced the best classification accuracy of all OA, AA, and Kappa. Table 4 shown the classification accuracy of the proposed method compared with other approaches for University of Pavia, we can see that the proposed method yielded the best result in metric criterion OA. 3-D Gabor achieved the best accuracy in metric criterion AA and Kappa. Fig.~\ref{figure7} (d) is the classification map using WTSO for Indian Pines scene.  Fig.~\ref{figure8} (d) shown the classification map for PaviaU using proposed method WTSO.
 
 \begin{table}[ht]
 \tbl{Classification accuracy (\%) for Indian Pines using different methods. Best results are marked bold. }
 {\begin{tabular}{@{}ccccccc@{}} \toprule
-Class & SVM  & 3-D wavelet & 3-D Gabor& SVM-3DG &Res.Conv-Deconv Net&\ SOWT \\
+Class & SVM  & 3-D wavelet & 3-D Gabor& SVM-3DG &Res.Conv-Deconv Net&\ WTSO \\
   \colrule
 1 & 89.29  & 61.22 & 82.65 & 96.77 & 74.86&  \textBF {100.00} \\
 2 & 69.92  & 85.33 & 93.60 & 58.46 &95.28 & \textBF {97.85}\\
@@ -567,7 +608,7 @@ Class & SVM  & 3-D wavelet & 3-D Gabor& SVM-3DG &Res.Conv-Deconv Net&\ SOWT \\
 14 & 96.62  & 92.95 & 98.58 & 77.84 & 84.62 &\textBF{99.31} \\
 15 & 54.94  & 55.22 & 95.19 & 95.42 &\textBF{100.00} & 99.71 \\
 16 & 93.65  & 80.70 & 87.33 &  98.72 & \textBF{100.00} & 95.52 \\
-
+\colrule
 AA & 83.83  & 78.35 & 88.65 & 89.94 &92.28 &\textBF{96.58} \\
 OA & 80.74  & 85.31 & 93.42 & 81.12 &85.76 &\textBF{97.75} \\
 Kappa & 78.03  & 83.25 & 92.50 & 78.64 &83.85 &\textBF{97.42} \\
@@ -624,7 +665,7 @@ Kappa & 78.03  & 83.25 & 92.50 & 78.64 &83.85 &\textBF{97.42} \\
 %\renewrobustcmd{\boldmath}{}
 \tbl{Classification accuracy (\%) for University of Pavia using different methods. Best results are marked bold. }
 {\begin{tabular}{@{}ccccccc@{}} \toprule
-Class & SVM  & 3-D wavelet & 3-D Gabor&SVM-3DG &Res.Conv-Deconv Net&\ SOWT \\
+Class & SVM  & 3-D wavelet & 3-D Gabor&SVM-3DG &Res.Conv-Deconv Net&\ WTSO \\
   \colrule
 1 & 92.40  & 97.18 & \textBF{98.48} & 97.39 &78.99 & 96.00 \\
 2 & 97.83  & 97.64 & \textBF{99.78} &  97.27 &97.16 &99.56 \\
@@ -635,7 +676,7 @@ Class & SVM  & 3-D wavelet & 3-D Gabor&SVM-3DG &Res.Conv-Deconv Net&\ SOWT \\
 7 & 90.20  & 93.45 & 90.49 & 98.20  &79.50&\textBF{99.72} \\
 8 & 86.94  & 93.42 & 95.88 & 84.00  &96.82&\textBF{98.00} \\
 9 &  99.86  & 99.09 & 82.22 &  \textBF{99.89} &92.40&94.40 \\
-
+\colrule
 AA & 93.59  & 95.02 & \textBF{97.98} & 95.71 &84.37 & 96.85 \\
 OA & 94.32  & 95.65 & 95.07 & 96.06 &87.39 &\textBF{97.76} \\
 Kappa & 92.37  & 94.23 & \textBF{97.32} & 94.78 &83.08 &96.96 \\
@@ -645,19 +686,14 @@ Kappa & 92.37  & 94.23 & \textBF{97.32} & 94.78 &83.08 &96.96 \\
 \end{table}
 
 
+\subsection{Impact of Free Parameters}
+Now, we analyze the impact of three free parameters on the classification performance in the proposed WTSO method. Three different experiments are designed on two HSI scenes to evaluate the impact of the free parameters. The final values of these parameters are selected based on the highest score criterion.
 
-
-
-
-
-
-
-\subsection{The impact of parameter}
-Now, we analyze the impact of the parameter on the HSI classification. Three different experiments are designed on two HSI scenes to evaluate the impact of the parameter for the proposed method SOWT. The proper values of the parameters are selected based on the highest accuracy criterion.
 \begin{romanlist}[(ii)]
-\item Firstly, we will analyse the influence of neighbor $K_{nei}$ in Eq.~\ref{equ2.7}.
-\item Secondly, we discuss the impact of parameter $\mu$ in Eq.~\ref{equ2.8}. The spatial parameter is very important for the proposed method.
-\item In the third experiment, we analysze the effect of parameter $\epsilon$ in Eq.~\ref{equ2.17}.
+\item Firstly, we analyze the influence of $K_{nn}$ in Eq.~\ref{equ2.7}.
+\item Secondly, we discuss the impact of  $\mu$ in Eq.~\ref{equ2.8}. The spatial parameter is very important for the proposed method.
+\item In the third experiment, we analyze the effect of  $\epsilon$ in Eq.~\ref{equ2.17}.
+\item  In the fourth experiment, the decomposition level of wavelet transform is studied.
 \end{romanlist}
 \begin{figure*}[bh]
         \centering
@@ -677,10 +713,18 @@ Now, we analyze the impact of the parameter on the HSI classification. Three dif
             \centerline{(b)}
             \medskip
         \end{minipage}
-        \caption{The impact of parameter $K_{nei}$. (a) Indian Pines  (b) PaviaU}
+        \caption{The impact of $K_{nn}$. (a) Indian Pines  (b) PaviaU}
         \label{figure3}
     \end{figure*}
-First, let parameter $K_{nei}$ in Eq.~\ref{equ2.7} increased from 1 to 9. Fig.~\ref{figure3}(a) and Fig.~\ref{figure3}(b) shown the impact of $K_{nei}$ for Indian Pines and PaviaU respectively. It is obviously in the picture, for Indian Pines, when $K_{nei}$ range from 1 to 3, the performance is sharply increased from 30\% to 96\%. When $K_{nei}$ rises from 5 to 7, the accuracy obtained the maximum 97.75\%, and more smooth. When $K_{nei}$ is greater than 7, the classification accuracy is declined. For PaviaU, When $K_{nei}$ ranges from 1 to 7, the performance is increased from 65\% to 98\%, but when $K_{nei}=9$, the accuracy is lower than $K_{nei}=7$. For Indian Pines, when $K_{nei} = 5$, the highest accuracy is achieved. For PaviaU in Fig.~\ref{figure3}(b), when $1 \leqslant  K_{nei} \leqslant 7$, the result is increased and the best accuracy is obtained when $K_{nei}=7$, but almost the same as when $K_{nei} = 5$. When $K_{nei}>7$, the performance become smooth. Hence, in this paper, based on the above analysis, 5 is chosen for $K_{nei}$ in SOWT.
+
+Firstly, we discuss the impact of $K_{nn}$ in Eq.~\ref{equ2.7}. We step its value from 1 to 9 using the size of 2. Fig.~\ref{figure3} (a) and Fig.~\ref{figure3}(b) display the impact of $K_{nn}$ for Indian Pines and PaviaU, respectively. 
+It can be observed that, for Indian Pines, when $K_{nn}$ ranges from 1 to 3, the performance is sharply increased. 
+When $K_{nn}$ rises from 5 to 7, the obtained OA is maximum. When $K_{nn}$ is greater than 7, the classification accuracy is declined. 
+For PaviaU, When $K_{nn}$ ranges from 1 to 7, the OA value is increased from 65\% to 98\%, but when $K_{nn}=9$, the OA value is lower than the one when $K_{nn}=7$. 
+For Indian Pines, when $K_{nn} = 5$, the highest accuracy is achieved. For PaviaU in Fig.~\ref{figure3}(b), when $1 \leqslant  K_{nn} \leqslant 7$, the result is increasing and the best accuracy is obtained when $K_{nn}=7$.
+%ut almost the same as when $K_{nn} = 5$. 
+%When $K_{nn}>7$, the performance become smooth. 
+Hence, in this paper, based on the above analysis, we use a fixed value in WTSO: $K_{nn}=5$.
 \begin{figure*}[bh]
         \centering
         \begin{minipage}[b]{0.45\linewidth}
@@ -725,42 +769,40 @@ First, let parameter $K_{nei}$ in Eq.~\ref{equ2.7} increased from 1 to 9. Fig.~\
         \label{figure5}
     \end{figure*}
 
-second, parameter $\mu$ in Eq.~\ref{equ2.8}, which to balance spectral information and spatial prior, is very important to improve classification accuracy. Fig.~\ref{figure4}(a) and Fig.~\ref{figure4}(b) shown the OA, AA and Kappa coefficient using proposed method SOWT when $\mu$ rises from 0.1 to 1 for Indian Pines and PaviaU respectively. For Indian Pines, when $\mu$ is in the range of [0.1,0.6], the OA, AA, and Kappa coefficient are increased and accepted. However, when $\mu$ rises from 0.7 to 1, all of OA, AA, Kappa are declined compared with a range of [0.1,0.6]. Particularly, when $\mu = 0.6$, the performance reached the maximum for all OA, AA, and Kappa. For PaviaU, when $\mu$ rises from 0.1 to 0.9, the accuracy is increased, and reached maximum value when $\mu=0.9$, about OA = 98.61\%, Kappa = 98.12\%, AA = 97.98\%. However, when $\mu = 0.9$, the accuracy is almost same as when $\mu = 0.6$. When $\mu>0.9$, the classification accuracy is decreased. Therefore, for computationally, we choose $\mu$ be equals 0.6 in this paper.
+Secondly, the parameter $\mu$ used in Eq.~\ref{equ2.8}, whose role is to balance the spectral information and spatial prior, is very important. 
+Fig.~\ref{figure4} (a) and Fig.~\ref{figure4} (b) show the OA, AA and Kappa coefficient when $\mu$ rises from 0.1 to 1, respectively. 
+For Indian Pines, when $\mu$ is in the range of [0.1,0.6], the OA, AA, and Kappa coefficient are increased. However, when $\mu$ rises from 0.7 to 1, all of OA, AA, Kappa are declined. Particularly, when $\mu = 0.6$, the performance reaches the maximum for all metrics. 
+For PaviaU, when $\mu$ rises from 0.1 to 0.9, the accuracy is increased, and it reaches the maximum value when $\mu=0.9$(OA = 98.61\%, Kappa = 98.12\%, AA = 97.98\%). However, when $\mu = 0.9$, the accuracy is almost the same as $\mu = 0.6$. When $\mu>0.9$, the classification accuracy is decreased. Therefore, for computationally, we choose $\mu$ to be equal to 0.6 in this paper.
 
 
 
-  \begin{figure}[bh]
+  \begin{figure}[htb]
 \centerline{\includegraphics[width=8cm]{image/decomposeLevel}}
 \vspace*{8pt}
 \caption{The impact of decompose level for Indian Pines.}
 \label{figure6}
 \end{figure}
 
-\begin{figure}[bh]
-\centerline{\includegraphics[width=13cm]{image/indian_map}}
-\vspace*{8pt}
-\caption{Classification maps for Indian Pines scene using training sample and testing samples from Table 2. (a) Ground truth (b) Training set (c) Test set (d) SOWT(OA=97.75\%)}
-\label{figure7}
-\end{figure}
 
 
 
-Third, we have shown the influence of parameter $\epsilon$ in Equ.~\ref{equ2.17} in the range from 50 to 550 for Indian Pines, 50 to 500 for PaviaU with the step 50. Fig.~\ref{figure5}(a) and Fig.~\ref{figure5}(b) shown the parameter impact for Indian Pines and PaviaU respectively. From Fig.~\ref{figure5}(a), we can see that when $\epsilon$ is increased from 50 to 200. OA, AA, Kappa are declined for Indian Pines, However, when its ranges from 250 to 500, classification accuracy are increased except AA range from 250 to 350. But when $\epsilon$ is range of [350,500], all of AA, OA, Kappa are increased, and when $\epsilon = 500$ obtained maximum, is 97.52\% for OA, 97.16\% for Kappa and 97.66\% for AA. When $\epsilon>500$, the accuracy become smooth even decreased. In Fig.~\ref{figure5}(b), we can see that all of AA, OA, Kappa are smooth when $\epsilon$ ranges from 50 to 300, however, when $\epsilon$ from 300 to 350, all of OA, AA, Kappa are declined. When $\epsilon$ rises from 350 to 500, all of AA, OA, Kappa are increased, and highest accuracy is obtained when $\epsilon =500$. Therefore, for computationally, we choose $\epsilon$ in this paper is 500.
 
-
-
-\begin{figure}[bh]
-\centerline{\includegraphics[width=12cm]{image/paviaMap}}
-\vspace*{8pt}
-\caption{Classification maps for University of Pavia scene using training sample and testing samples from Table 2. (a) Ground truth (b) Training set (c) Test set (d) SOWT(OA=97.76\%)}
-\label{figure8}
-\end{figure}
+In the third experiment, we show the influence of $\epsilon$ in Eq.~\ref{equ2.17} by ranging it from 50 to 550 for Indian Pines, and 50 to 500 for PaviaU, with the step 50 for both images. Fig.~\ref{figure5}(a) and Fig.~\ref{figure5}(b) show the  impact for Indian Pines and PaviaU, respectively. From Fig.~\ref{figure5}(a), we can see that when $\epsilon$ is increased from 50 to 200, all of OA, AA, Kappa are declined for Indian Pines.
+However, when it ranges from 250 to 500, the classification accuracy is overall increased (AA is an exception in the rang of 250 to 350). 
+When $\epsilon$ is in the range of [350,500], all  metrics are increased, where the best result is obtained when $\epsilon = 500$.
+%The is 97.52\% for OA, 97.16\% for Kappa and 97.66\% for AA. 
+When $\epsilon>500$, the accuracy becomes smooth and decreasing. In Fig.~\ref{figure5}(b), we can observe that all of AA, OA, Kappa are smooth when $\epsilon$ ranges from 50 to 300.
+However, when $\epsilon$ ranges from 300 to 350, all of OA, AA, Kappa are declined. 
+And when $\epsilon$ rises from 350 to 500, all of AA, OA, Kappa are increased again.
+The highest accuracy is obtained when $\epsilon =500$. Therefore, we choose $\epsilon=500$  in this paper.
 
 
 
 
 
-Finally, we analyze the impact of decompose level for Indian Pines range from 2 to 6. Fig.~\ref{figure6} shown the results. It is obvious that when decompose level increased from 2 to 5, OA and Kappa are increased and AA declined when decomposing level from 2 to 3. The best result is obtained when decompose level is 5 except AA. However, when decompose level is greater than 5, all of AA, OA and Kappa are sharply declined. Hence, we choose to decompose level equals 5 in this paper.
+Finally, in the fourth experiment, we analyze the impact of decomposition level using Indian Pines, where the level ranges from 2 to 6. 
+Fig.~\ref{figure6} shows the results. It is obvious that when increasing the decomposition level from 2 to 5, OA and Kappa are improved, and AA is decreasing when in the range of [2, 3]. 
+The best results are obtained when the decomposition level is 5 except AA. However, when the decomposition level is greater than 5, all of AA, OA and Kappa are sharply declined. Hence, we choose the decomposition level to be 5 in this paper.
 
 
 
@@ -775,8 +817,13 @@ Finally, we analyze the impact of decompose level for Indian Pines range from 2 
 
 \section{Conclusion}\label{sec:conclude}
 
-%In this paper, a novel method name SOWT is proposed for HSI classification task. This approach is based on wavelet transform and smooth ordering, which is performance effectively in image processing. First, we apply wavelet transform to the image, obtained approximate coefficient. Then, by using smooth ordering among approximate coefficient, which produces a 1D embedding and it in 1D space. Hence, simple 1D processing tool is applied to task. Finally, interpolation is used to build finally classifier for HSI classification task. Experiments demonstrated that the proposed method obtained state of the art result in Indian Pines and best overall accuracy (OA) in University of Pavia. Therefore, the proposed method is effective and promising for HSI classification. In the future work, SOWT can be applied to other signal analysis tools, such as sparse representation.%
-A novel and effective method SOWT has been proposed for HSI classification in this paper. In the SOWT method, the wavelet transform is first applied to the input signal so that the signal has been decomposed into ACs and DCs. Then, a new distance measure is defined for smooth ordering. Based the smooth ordering, in SOWT, the ACs are smoothly embedding onto 1-D space, so that simple 1-D tools, such as interpolation can be used for feature extract. Finally, the classifier is established using interpolation. The SOWT method can process ACs in low-dimensional space, which becomes more effectively. To demonstrate the effectiveness of SOWT, two real HSI data are chosen for experiments. Compared with other recently proposed state-of-the-art wavelet transform based methods, our approach can obtain high accuracy in most cases.
+%In this paper, a novel method name WTSO is proposed for HSI classification task. This approach is based on wavelet transform and smooth ordering, which is performance effectively in image processing. First, we apply wavelet transform to the image, obtained approximate coefficient. Then, by using smooth ordering among approximate coefficient, which produces a 1D embedding and it in 1D space. Hence, simple 1D processing tool is applied to task. Finally, interpolation is used to build finally classifier for HSI classification task. Experiments demonstrated that the proposed method obtained state of the art result in Indian Pines and best overall accuracy (OA) in University of Pavia. Therefore, the proposed method is effective and promising for HSI classification. In the future work, WTSO can be applied to other signal analysis tools, such as sparse representation.%
+A novel and effective method WTSO is proposed for HSI classification in this paper. In the WTSO method, the wavelet transform is first applied to the input signal so that the signal can be decomposed into ACs and DCs. Then, a new distance measurement is applied before smooth ordering to obtain the similarity of different samples. 
+%Based the smooth ordering, in WTSO, 
+The obtained ACs are smoothly embedded onto a 1-D space, after that, the simple 1-D tools, such as interpolation, can be used for constructing the candidate classifiers. 
+%Finally, the classifier is established using interpolation. 
+And the final classifier are constructed using multiple 1-D embeddings.
+The WTSO method processes ACs in low-dimensional space, which is more explicit. To demonstrate the effectiveness of WTSO, two real HSI data sets are experimentally evaluated. Compared with other recently proposed state-of-the-art wavelet-based methods, our approach can obtain higher accuracy in most cases.
 
 \section{Acknowledgement}
 This work was supported by the National Natural Science Foundation with No. 61862005, and Natural Science Foundation of Guangxi with No. 2017GXNSFBA198226.
