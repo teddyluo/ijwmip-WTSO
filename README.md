@@ -2,22 +2,24 @@
 Prepare a manuscrpit to submit to IJWMIP.
 
 ---
-## Manuscript progress:
+### 1. Progress:
 
-### Finished work:
+1） Finished work:
  * [x] Motivation/experiment.
  * [x] Draft preparation.
  * [x] Theoretical examination: introduction/theory.
 
-### Current work:
+2） Current work:
  *  Grammatical examination: experiment/conclusion. (under progress)
 
-###To be launched:
+3） To be launched:
  * [ ] examination of figures/tables, *etc*.
  * [ ] adjustment/simplification/consolidation, of certain sections/subsections.
  * [ ] re-submission.
 
-### Contributors:
+---
+
+### 2. Contributors:
 * Hailong su
 * Lina Yang
 * Huiwu Luo
