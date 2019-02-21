@@ -1,5 +1,5 @@
 # ijwmip-WTSO
-Preparing manuscrpit for submitting to IJWMIP
+Prepare a manuscrpit to submit to IJWMIP.
 
 ---
 ## Manuscript progress:
