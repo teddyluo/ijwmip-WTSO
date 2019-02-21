@@ -6,16 +6,18 @@ Preparing manuscrpit for submitting to IJWMIP
 
 * Finished work:
  * [x] Motivation/experiment.
- * [x] Draft. (done)
- * [x] Theory examination: introduction/theory. 
+ * [x] Draft preparation.
+ * [x] Theoretical examination: introduction/theory.
 
 * Current work:
- * [-] Grammatical examination: experiment/conclusion. (under progress)
+ *  Grammatical examination: experiment/conclusion. (under progress)
 
 * To be launched:
- * [ ] Graphical examinzation
+ * [ ] examination of figures/tables, *etc*.
+ * [ ] adjustment/simplification/consolidation, of certain sections/subsections.
+ * [ ] re-submission.
 
-### Contributed authors:
+### Contributors:
 * Hailong su
 * Lina Yang
 * Huiwu Luo
