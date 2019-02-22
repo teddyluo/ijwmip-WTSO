@@ -16,7 +16,7 @@ Prepare a manuscrpit to submit to IJWMIP.
 
 
 2） Current work:
-* [x] Underprogressof reviewing.
+* [x] Undergo reviewing.
 
 3） To be launched:
 
