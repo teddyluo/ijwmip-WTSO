@@ -58,7 +58,7 @@
 
 \author{Huiwu Luo}% \vspace{-7pt}  $^\P$
 
-\address{AI Research, Sichuan Changhong Electric Co.,Ltd., Chengdu, 610000, China\,\\
+\address{AI Research, Sichuan Changhong Electric Co., Ltd., Chengdu, 610000, China\,\\
 	\email{luohuiwu@gmail.com}
 }
 
@@ -92,14 +92,7 @@
 %\end{history}
 
 \begin{abstract}
-   To efficiently improve the accuracy of hyperspectral image (HSI) classification, the spatial information is usually fused with spectral information so that the classification performance can be enhanced. 
-   To effectively alleviate the general HSI classification problem, in this paper, we propose a new classification method called \textit{wavelet transform-based smooth ordering} (WTSO). Specifically, WTSO consists of three main parts: wavelet decomposition, smooth ordering, and one-dimensional (1-D) interpolation. 
-   In this approach, the wavelet transform is firstly imposed to decompose the HSI signal into approximate coefficients (ACs) and details coefficients (DCs). Then, smooth ordering is applied to the ACs so that the coefficients is aligned in a 1-D space. In this procedure, the spatial information is encoded.
-   Finally, the simple 1-D signal interpolation tool is adopted to build the final classifier.
-   The use of wavelet transform in WTSO is to reduce the high dimensionality of HSI on one hand and capture the intrinsic property of each input signal on the other hand.
-   Besides, by converting the hight dimensional samples into a 1-D ordering sequence, WTSO can reduce the computational cost and simultaneously perform prediction for the samples without labels.
-   Note that in WTSO, the smooth ordering and 1-D interpolation are used in an iterative manner, and will be terminated after a finite number.
-   The proposed method is experimentally demonstrated on two real HSI data sets: IndianPines and University of Pavia, achieving promising results.
+   To efficiently improve the accuracy of hyperspectral image (HSI) classification, the spatial information is usually fused with spectral information so that the classification performance can be enhanced. In this paper, we propose a new classification method called wavelet transform-based smooth ordering (WTSO). WTSO consists of three main components:    wavelet transform for feature extraction, spectral-spatial based similarity measurement,    smooth ordering based 1-D embedding, and construction of final classifier using interpolation scheme. Specifically, wavelet transform is firstly imposed to decompose the HSI signal into approximate coefficients (ACs) and details coefficients (DCs). Then, to measure the similar level of pairwise samples, a novel metric is defined on the ACs, where the spatial information is serving as the prior knowledge. Next, according to the measurement results, smooth ordering is applied so that the samples are aligned in a 1-D space (called 1-D embedding). Finally, since the reordering samples are smooth, the labels of test samples can be recovered using the simple 1-D interpolation method. In the last step, in order to reduce the bias and improve accuracy, the final classifier is constructed using multiple 1-D embeddings. The use of wavelet transform in WTSO can also reduce the high dimensionality of HSI data. By converting the hight dimensional samples into a 1-D ordering sequence, WTSO can reduce the computational cost, and simultaneously perform classification for the test samples. Note that in WTSO, the smooth ordering based 1-D embedding and interpolation are executed in an iterative manner. And they will be terminated after a finite steps. The proposed method is experimentally demonstrated on two real HSI data sets: IndianPines and University of Pavia, achieving promising results.
 \end{abstract}
 
 \keywords{Wavelet transform; smooth ordering; HSI classification; smooth interpolation; feature extraction.}
@@ -176,18 +169,18 @@ Then, according to the observation that the ACs contains the main information of
 
 The main steps of our method can be explained as follows:
 Firstly, the wavelet transform is adopted to decompose the HSI image into ACs and DCs.
-Secondly, using a distance measurement in our previous work \cite{31},
-smooth ordering is performed on the ACs, where the dissimilarity of each sample is calculated accordingly.
-Next, based on the measurement, smooth ordering algorithm is applied to the coefficients,
+Secondly, using a distance measurement on the ACs in our previous work \cite{31},
+the similarity of pairwise samples is calculated accordingly.
+Next, based on the similarity measurement, smooth ordering algorithm is applied to the coefficients to obtain a 1-D embedding of the input ACs.
 %which can be smoothly reordered and further embedded into a 1-D sequence.
-resulting in an ordered sequence of these data in 1-D space.
-Finally, a group of  classifiers are constructed using 1-D interpolation,
+This calculation results in an ordered sequence of the input data in 1-D space.
+Finally, a group of classifiers are constructed using multiple 1-D embeddings,
 and the final class is assigned by the maximum voting rule.
 %which is a simple tool for 1-D signal processing.
 
 
 
-The highlight of this work is to explore the capability of smooth ordering in frequency domain using wavelet transform. In details, we refine the following aspects to highlight our preliminary work: 
+The highlight of this work is to explore the capability of smooth ordering in frequency domain using wavelet transform. In details, we refine the following aspects to highlight our  work: 
 \begin{enumerate}
 \item A new metric is defined to make our algorithm work properly in the wavelet domain. 
 \item Smooth ordering is introduced to explicitly find out the decision bound, making the results more intuitive. 
@@ -219,7 +212,7 @@ In this section, we introduce our proposed  WTSO method. The flowchart of our me
 The details are described in the following subsections.
 
 
-\subsection{Descriptive Transformation by Wavelet Decomposition}
+\subsection{Feature Extraction Using Wavelet Decomposition}
 In this section, we briefly review the concept of wavelet transform.
 Wavelet transform can be found in any articles that are related to the concept of wavelet, such as the one in Qian \textit{et al.} \cite{29}. 
 %In mathematics, a wavelet is , which can be used to extract information from many different kinds of data,  processing. 
@@ -286,18 +279,49 @@ Because the information of an image is mainly represented in the ACs, we only us
 \end{figure}
 
 
-
-\subsection{Smooth Ordering of Input Signals}
-%{Obtaining Descriptive Features by Wavelet transform}
-%
-
-
-%\subsubsection{Decomposition scheme}
+\subsection{Spectral-Spatial Based Similarity Measurement}
 Let $\mathcal{X}=\{x_i\}_{i=1}^N\in \mathbb{R}^n$ be a set of HSI pixels which are choose from $M$ different classes. The data set $\mathcal{X}$ can be expressed as a matrix $X = [x_1,x_2,x_3,\dots,x_N] \in \mathbb{R}^{n\times N}$, where each column stands for a pixel in $\mathcal{X}$. The notation $\mathcal{Y} \in \{1,2,\dots,M\}$ is the set of class labels. 
 
+In our previous work \cite{31}, we proposed a spectral-spatial distance measure for smooth ordering. The quality of distance measurement is very critical for improving classification accuracy \cite{ML1DE}. Here, a new distance measurement is developed to measure the similarity of different samples. 
 
-%Once the ACs of an HSI image is given, smooth ordering is used to produced smooth coefficients . Next section we expound how to achieve a smooth coefficients of HSI.
-%\subsection{Building the smooth coefficients}
+The spectral distance $D^w(a_i, a_j)$ between samples $x_i$ and $x_j$ is defined by:
+\begin{equation}
+D^w(a_i, a_j) = 1 - exp(-\frac{\left \| x_i - x_j \right \|^2}{\rho _i\rho _j})
+\label{equ2.6}
+\end{equation}
+where $a_i\in \mathcal{S}=\{1,\cdots, N\}$ is the index of the $a_i$-th sample in $\mathcal{X}$, and 
+$\rho_i$ is a local scaling parameter defined by:
+\begin{equation}
+\rho _i = \left \| x_i-x_i^{K_{nn}} \right \|.
+\label{equ2.7}
+\end{equation}
+Here,  $x_i^{K_{nn}}$ is the $K_{nn}$-th neighbor around $x_i$, and $\left \| * \right \|$ is a $l_2$ norm.
+
+In order to improve classification accuracy, the spatial distance between two samples $x_i$ and $x_j$ is encoded according the the following equation:
+\begin{equation}
+D^s(a_i,a_j) =\left\{\begin{matrix}
+-\mu, & \mbox{if} \;j \in {\omega_i}.\\
+0,  & otherwise
+\end{matrix}\right.
+\label{equ2.8}
+\end{equation}
+where $\mu > 0$ is a weighing parameter that is used to enhance the similarity using a spatial prior. The symbol of $\omega_i$ is defined by:
+
+\begin{equation}
+\omega _i = \{j\in \mathcal{S} \mid dist(x_m, x_n) \leqslant \sqrt{r}\}
+\label{equ2.9}
+\end{equation}
+where $dist(x_m, x_n)$ is the distance between $x_m$ and $x_n$. $\mathcal{S} = \{1,2,3,\dots,N\}$.
+
+Using the above notations, the spectral-spatial metric is given by:
+%Finally, the distance measure is defined as follows:
+\begin{equation}
+D^{ws}(a_i, a_j) = D^w(a_i, a_j) + D^s(a_i, a_j).
+\label{equ2.10}
+\end{equation}
+
+
+\subsection{Smooth Ordering Based 1-D Embedding}
 
 The goal of smooth ordering is to design an operator that is applied to approximate the coefficients and produces an ordering under the given distance metric. 
 %To continue our discussion, we  
@@ -306,51 +330,16 @@ The goal of smooth ordering is to design an operator that is applied to approxim
 %two similar pixels means that their approximate coefficients are also similar.
 In the new ordering, pixels with similar spectral signature should be stay as close as possible.
 
-In our previous work \cite{31}, we proposed a spectral-spatial distance measure for smooth ordering. The quality of distance measurement is very critical for improving classification accuracy \cite{ML1DE}. Here, a new distance measurement is developed to measure the similarity of different samples. 
 
-The spectral distance $D^w(a_i, a_j)$ between samples $x_i$ and $x_j$ is defined by:
- \begin{equation}
-    D^w(a_i, a_j) = 1 - exp(-\frac{\left \| x_i - x_j \right \|^2}{\rho _i\rho _j})
-    \label{equ2.6}
-\end{equation}
- where $a_i\in \mathcal{S}=\{1,\cdots, N\}$ is the index of the $a_i$-th sample in $\mathcal{X}$, and 
- $\rho_i$ is a local scaling parameter defined by:
- \begin{equation}
-   \rho _i = \left \| x_i-x_i^{K_{nn}} \right \|.
-   \label{equ2.7}
-\end{equation}
-Here,  $x_i^{K_{nn}}$ is the $K_{nn}$-th neighbor around $x_i$, and $\left \| * \right \|$ is a $l_2$ norm.
-
-In order to improve classification accuracy, the spatial distance between two samples $x_i$ and $x_j$ is encoded according the the following equation:
- \begin{equation}
-  D^s(a_i,a_j) =\left\{\begin{matrix}
--\mu, & \mbox{if} \;j \in {\omega_i}.\\
-0,  & otherwise
-\end{matrix}\right.
- \label{equ2.8}
-\end{equation}
-where $\mu > 0$ is a weighing parameter that is used to enhance the similarity using a spatial prior. The symbol of $\omega_i$ is defined by:
-
- \begin{equation}
-  \omega _i = \{j\in \mathcal{S} \mid dist(x_m, x_n) \leqslant \sqrt{r}\}
-   \label{equ2.9}
-\end{equation}
- where $dist(x_m, x_n)$ is the distance between $x_m$ and $x_n$. $\mathcal{S} = \{1,2,3,\dots,N\}$.
- 
- Using the above notations, the spectral-spatial metric is given by:
- %Finally, the distance measure is defined as follows:
-  \begin{equation}
-  D^{ws}(a_i, a_j) = D^w(a_i, a_j) + D^s(a_i, a_j).
-   \label{equ2.10}
-\end{equation}
-
-%Under this distance measure, 
-In fact, smooth ordering operated on the sequences $\{a_i\}_i^N$ can be considered as a permutation $P$ on $A=[a_1, \cdots, a_N]$, where $a_i \in \mathcal{S}$.
+After calculating a similarity measurement of pairwise instances, 
+smooth ordering operated on the sequences $\{a_i\}_i^N$ can be considered as a permutation $P$ on $A=[a_1, \cdots, a_N]$, where $a_i \in \mathcal{S}$.
 The effect is that all sequences will be reordered into a new sequence $A^P=[a_1^P,a_2^P,a_3^P,\dots,a_N^P]$ ($a_i^P \in \mathcal{S}$). 
 Clearly, there are many kinds of such sequences. 
 But only the one which has the shortest traveling path is meaningful and closely related to our problem.
 Substantially, our problem is a in fact a TSP problem.
-Therefore, our problem can be solved by the following optimization:
+Therefore, our problem is the well known TSP problem, 
+%Therefore, our problem 
+which can be solved by the following optimization:
 \begin{equation}
   P = arg \min _P a_{TV}^P, ~~ a_{TV}^P = \sum_{i=1}^{N-1}D^{ws}(a_{i+1}^P,a_i^P).
    \label{equ2.11}
@@ -406,7 +395,7 @@ t_h = [t_1,t_2,t_3,\dots,t_N].
 Considering that the ordering coefficients are close related to the original vectors, they can be viewed as an \emph{1-D embedding} of the original signals.
 
 
-\subsection{Building Classifiers by Iterative Scheme}
+\subsection{Final Classification Using Multiple Embeddings}
 Now, we give the description of how to build the final classifiers after smooth ordering on the 1-D vectors. 
 Smooth ordering is first proposed in Ref.~\refcite{30}, 
 where the input is a image patch.
@@ -441,19 +430,19 @@ Summarily, our proposed method WTSO for HSI classification is given in Algorithm
 \begin{algorithm}
 	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
 	\renewcommand{\algorithmicensure}{\textbf{Output:}}
-	\caption{Our proposed method WTSO.}
+	\caption{Procedure of proposed WTSO method.}
 	\label{alg:1}
 	\begin{algorithmic}[1]
 		\REQUIRE Training data $\mathcal{X}_{train}=\{X_i\}_{i=1}^{n_0}\in \mathbb{R}^n$, Testing samples $\mathcal{X}_{test}=\{X_i\}_{i=n_0+1}^N\in \mathbb{R}^n$ and class labels $\mathcal{Y}_{label}$.
 		\ENSURE Labels $\{y_i\}_{i=n_0+1}^N$ of all testing samples $\mathcal{X}_{test}$.
-		\STATE \textbf{(Decompose scheme)} Decompose HSI and obtained the approximate coefficients.
-		\STATE \textbf{(Distance measure)} Define new distance measure for smooth ordering using Eq.~\ref{equ2.10}.
+		\STATE (\textbf{Wavelet transform}) Decompose HSI signal and obtain the approximate coefficients ACs.
+		\STATE (\textbf{Distance measurement}) Calculate pairwise similarity according to Eq.~\ref{equ2.10}.
 
-		\FORALL {k = 1, 2,$\dots$, M}
-		\STATE Compute 1-D embedding of ACs.
-		\STATE Built classifier using cubic spline interpolation.
+		\FORALL {k = 1, 2,$\dots$, K}
+		\STATE (\textbf{1-D Embedding}) Compute 1-D embedding of ACs.
+		\STATE (\textbf{Classification}) Build classifier using cubic spline interpolation.
 		\ENDFOR
-		\STATE Decide class of $X:X\in \mathcal{X}_{test} $
+		\STATE (\textbf{Final classification}) Decide the class of $X:X\in \mathcal{X}_{test}$.
 	\end{algorithmic}
 \end{algorithm}
 
@@ -565,7 +554,7 @@ ID & Class name & Train &\ Test \\
 \label{table2}
 \end{table}
 
-\subsubsection{Performance Metrics }
+\subsubsection{Performance Indicators}
 
 %In a general sense, metric is used to measure the performance of each classes classified correctly.
 The results are measured by overall accuracy (OA), average accuracy (AA), and Kappa coefficient (Kappa). In details, OA is the ratio of those correctly classified samples to the total samples. AA is the average of all classes. 
@@ -689,12 +678,14 @@ Kappa & 92.37  & 94.23 & \textBF{97.32} & 94.78 &83.08 &96.96 \\
 \subsection{Impact of Free Parameters}
 Now, we analyze the impact of three free parameters on the classification performance in the proposed WTSO method. Three different experiments are designed on two HSI scenes to evaluate the impact of the free parameters. The final values of these parameters are selected based on the highest score criterion.
 
-\begin{romanlist}[(ii)]
+%\begin{romanlist}[(ii)]
+\begin{enumerate}
 \item Firstly, we analyze the influence of $K_{nn}$ in Eq.~\ref{equ2.7}.
 \item Secondly, we discuss the impact of  $\mu$ in Eq.~\ref{equ2.8}. The spatial parameter is very important for the proposed method.
 \item In the third experiment, we analyze the effect of  $\epsilon$ in Eq.~\ref{equ2.17}.
 \item  In the fourth experiment, the decomposition level of wavelet transform is studied.
-\end{romanlist}
+\end{enumerate}
+%\end{romanlist}
 \begin{figure*}[bh]
         \centering
         \begin{minipage}[b]{0.45\linewidth}
