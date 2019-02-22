@@ -23,6 +23,7 @@ Prepare a manuscrpit to submit to IJWMIP.
 
 4） Attachment:
   * [完整草稿](ws-ijwmip.pdf)
+  * [修改部分](ws-ijwmip-r1.pdf)
 
 ---
 
